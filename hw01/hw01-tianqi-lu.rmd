@@ -2,29 +2,156 @@
 title: "hw01-tianqi-lu"
 author: "Tianqi Lu"
 date: "9/20/2017"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+#install.packages("scatterplot3d")
+library(scatterplot3d)
+```
+# 1. A bit of data processing
+## load data file
+```{r}
+load("data/nba2017-salary-points.RData")
+ls()
+```
+## make a new salary variable s.t. the unit is million
+```{r}
+nsalary <- round(salary / 1000000, digits = 2)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+## make a new experience variable s.t. 'R' is replaced with '0', and make it an integer vector
+```{r}
+indices <- experience == "R"
+nexperience <- replace(experience, indices, "0")
+nexperience <- as.integer(nexperience)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+## new position
+```{r}
+nposition <- factor(position)
+levels(nposition)[levels(nposition) == "C"] <- "center"
+levels(nposition)[levels(nposition) == "PF"] <- "power_fwd"
+levels(nposition)[levels(nposition) == "SF"] <- "small_fwd"
+levels(nposition)[levels(nposition) == "PG"] <- "point_guard"
+levels(nposition)[levels(nposition) == "SG"] <- "shoot_guard"
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## compute frequency in position factor
+```{r}
+table(nposition)
+```
+
+# 2. Scatterplot of salary and points
+```{r}
+plot(points, nsalary, xlab = "Points", ylab = "Salary (in millions)", col = adjustcolor("chocolate1", alpha=0.5), cex = 1, pch = 19, main = "Scatterplot of Points and Salary")
+```
+
+# 3. Correlation between Points and Salary
+## Mean of points
+```{r}
+xsum <- 0
+n <- length(points)
+xbar <- sum(points) / n
+xbar
+```
+## Mean of salary(in millions)
+```{r}
+ysum <- 0
+ybar <- sum(nsalary) / n
+ybar
+```
+
+## variance of points(x) and SD(x)
+```{r}
+xvarsum <- 0
+varX <- sum((points - xbar)^2)/(n-1)
+varX
+sdX <- sqrt(varX)
+sdX
+```
+
+## variance of salary(in millions)(y) and sdY
+```{r}
+yvarsum <- 0
+varY <- sum((nsalary - ybar)^2)/(n-1)
+varY
+sdY <- sqrt(varY)
+sdY
+
+```
+## calculate covariance(x,y)
+```{r}
+covsum <- 0
+covxy <- sum((points - xbar)*(nsalary - ybar))/(n-1)
+covxy
+```
+
+## correlation(x,y)
+```{r}
+corxy <- covxy / (sdX * sdY)
+corxy
+```
+
+# 4. Simple linear regression
+```{r}
+b1 <- corxy * sdY / sdX
+b0 <- ybar - b1 * xbar
+yhat <- b0 + b1 * points
+yhat
+```
+
+## Questions
+```{r}
+summary(yhat)
+```
+
+
+- Regression equation is $\hat {y} = b_0 + b_1 * points$ is a a 
+- Slope coefficient $b_1$ stands for how much more salary when "points" increase by 1.
+- Intercept term $b_0$ stands for the salary for 0-point players
+- Predicted salary(in millions) for a player that scores:
+  1. 0 points: 1.509077
+  2. 100 points: 2.364833
+  3. 500 points: 5.78786
+  4. 1000 points: 10.06664
+  5. 2000 points: 18.62421
+  
+  
+# 5. Plotting the regression line
+## 
+```{r}
+plot(nsalary~points,pch = 19, col = adjustcolor("chocolate1", alpha=0.5), main = "Scatterplot of Points and Salary", xlab = "Years of experience", ylab = "salary (in millions)")
+abline(b0, b1, lwd = 2 ) 
+lines(lowess(points,nsalary))
+text(x = c(2400, 2400), y = c(20, 30), labels = c("regression", "lowess"))
+```
+
+# 6. Regression residuals and coefficient of determination $R ^ 2$
+
+```{r}
+ei <- nsalary - yhat
+RSS <- sum(ei^2)
+TSS <- sum((nsalary - ybar)^2)
+R2 <- 1-RSS/TSS
+```
+
+#  Exploring position and experience
+```{r}
+plot(nsalary~nexperience,pch = 19, col = "chocolate1", main = "Scatterplot with lowess smooth"); lines(lowess(nexperience,nsalary))
+pllot <- scatterplot3d(x = points, y = nexperience, z = nsalary, pch = 16, color = adjustcolor("chocolate1", alpha=0.5) , main = "3d_relationship", ylab = "experience", zlab = "salary")
+
+```
+## Boxplot
+```{r}
+boxplot(nsalary ~ nposition, ylab = "Salary (in million)", xlab = "Position")
+
+```
+## Questions
+- Provide concise descriptions for the plots of this section.
+    This section gives us the relation between players' salary, players' positions and their experience.
+- From the scatterplots, does Experience seem to be related with Salary?
+    Yes. Generally the more experience you have, the more salary you get.
+- From the boxplot, does Position seem to be related with Salary?
+    Not really.
