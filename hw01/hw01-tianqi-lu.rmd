@@ -108,15 +108,15 @@ summary(yhat)
 ```
 
 
-- Regression equation is $\hat {y} = b_0 + b_1 * points$ is a a 
+- Regression equation is $\hat {y} = b_0 + b_1 * points$
 - Slope coefficient $b_1$ stands for how much more salary when "points" increase by 1.
 - Intercept term $b_0$ stands for the salary for 0-point players
 - Predicted salary(in millions) for a player that scores:
-  1. 0 points: 1.509077
-  2. 100 points: 2.364833
-  3. 500 points: 5.78786
-  4. 1000 points: 10.06664
-  5. 2000 points: 18.62421
+  1. 0 points: `r b0`
+  2. 100 points: `r b0 + b1 * 100`
+  3. 500 points: `r b0 + b1 * 500`
+  4. 1000 points: `r b0 + b1 * 1000`
+  5. 2000 points: `r b0 + b1 * 2000`
   
   
 # 5. Plotting the regression line
