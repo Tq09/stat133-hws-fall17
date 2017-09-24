@@ -123,8 +123,8 @@ summary(yhat)
 ## 
 ```{r}
 plot(nsalary~points,pch = 19, col = adjustcolor("chocolate1", alpha=0.5), main = "Scatterplot of Points and Salary", xlab = "Years of experience", ylab = "salary (in millions)")
-abline(b0, b1, lwd = 2 ) 
-lines(lowess(points,nsalary))
+abline(b0, b1, lwd = 2, col = "red" ) 
+lines(lowess(points,nsalary), col = "blue")
 text(x = c(2400, 2400), y = c(20, 30), labels = c("regression", "lowess"))
 ```
 
@@ -137,9 +137,9 @@ TSS <- sum((nsalary - ybar)^2)
 R2 <- 1-RSS/TSS
 ```
 
-#  Exploring position and experience
+# 7. Exploring position and experience
 ```{r}
-plot(nsalary~nexperience,pch = 19, col = "chocolate1", main = "Scatterplot with lowess smooth"); lines(lowess(nexperience,nsalary))
+plot(nsalary~nexperience,pch = 19, col = adjustcolor("black", alpha=0.5), main = "Scatterplot with lowess smooth"); lines(lowess(nexperience,nsalary))
 pllot <- scatterplot3d(x = points, y = nexperience, z = nsalary, pch = 16, color = adjustcolor("chocolate1", alpha=0.5) , main = "3d_relationship", ylab = "experience", zlab = "salary")
 
 ```
@@ -150,8 +150,12 @@ boxplot(nsalary ~ nposition, ylab = "Salary (in million)", xlab = "Position")
 ```
 ## Questions
 - Provide concise descriptions for the plots of this section.
-    This section gives us the relation between players' salary, players' positions and their experience.
+    This section gives us the relation between players' salary, players' positions and their experience. Boxplot gives the relation between position and salary. Scatterplot gives the relation between experience and salary, and 3d scatterplot gives the relation among these three.
 - From the scatterplots, does Experience seem to be related with Salary?
     Yes. Generally the more experience you have, the more salary you get.
 - From the boxplot, does Position seem to be related with Salary?
-    Not really.
+    Not really. Because the means are similar, the 25 quantiles are similar and the 75 quantiles don't vary a lot either.
+    
+# 8. Comments
+
+The hardest parts in my mind are boxplot and lowess line. I know how to code it but don't fully understand what they stand for and how we use them.
