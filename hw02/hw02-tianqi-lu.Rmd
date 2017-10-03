@@ -7,14 +7,24 @@ output: github_document
 
 # Import the data with base
 ```{r}
-data <- read.csv("/Users/TLuv/Downloads/stat133/stat133-hws-fall17/nba2017-player-statistics.csv", header = TRUE, colClasses = c("character", "character", "factor", "character", "double", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer"))
+
+github <- "https://github.com/ucb-stat133/stat133-fall-2017/raw/master/"
+file <- "data/nba2017-player-statistics.csv"
+csv <- paste0(github, file)
+download.file(url = csv, destfile = 'data/nba2017-player-statistics.csv')
 ```
+```{r}
+data <- read.csv("/Users/TLuv/Downloads/stat133/stat133-hws-fall17/hw02/data/nba2017-player-statistics.csv", header = TRUE, colClasses = c("character", "character", "factor", "character", "double", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer", "integer"))
+```
+
+
+
 ```{r}
 str(data)
 ```
 ```{r}
 library("readr")
-data <- read_csv("/Users/TLuv/Downloads/stat133/stat133-hws-fall17/nba2017-player-statistics.csv", col_types = list(col_character(), col_character(), col_factor(NULL), col_character(), col_double(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer()))
+data1 <- read_csv("/Users/TLuv/Downloads/stat133/stat133-hws-fall17/hw02/data/nba2017-player-statistics.csv", col_types = list(col_character(), col_character(), col_factor(NULL), col_character(), col_double(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer(), col_integer()))
 ```
 ```{r}
 str(data)
@@ -29,9 +39,7 @@ data$Experience <- as.integer(data$Experience)
 # 4. Performance of Players
 ```{r}
 Missed_FG <- data$FGA - data$FGM
-Missed_FG
 Missed_FT <- data$FTA - data$FTM
-Missed_FT
 PTS <- 2 * data$Points2 + 3 * data$Points3 + data$FTM
 REB <- data$DREB + data$OREB
 MPG <- data$MIN / data$GP
@@ -41,7 +49,6 @@ summary(EFF)
 
 ## Add the columns to the data frame
 ```{r}
-EFF <- round(EFF, 5)
 data <- cbind(data, Missed_FG, Missed_FT, PTS, REB, MPG, EFF)
 ```
 
@@ -51,7 +58,7 @@ hist(EFF, main = "Histogram of Efficiency (EFF)", xlab = "EFF", ylab = "Frequenc
 
 ## Display the player name, team, salary, and EFF value of the top-10 players by EFF in decreasing order
 ```{r}
-a <- round(head(sort(data$EFF, decreasing = TRUE), n = 10),5)
+a <- head(sort(data$EFF, decreasing = TRUE), n = 10)
 data[match(a, data$EFF), c("Player", "Team", "Salary", "EFF")]
 ```
 
@@ -75,10 +82,10 @@ corGP <- cor(data$EFF, data$GP)
 ```
 ## Display the computed correlations in descending order, either in a vector or a data frame. And create a barchart with the correlations (bars in decreasing order) like the one below.
 ```{r}
-a <- data.frame(c(corPTS, corREB, corAST, corSTL, corBLK, corMFG, corMFT, corTO))
+a <- data.frame(c(corPTS, corREB, corAST, corSTL, corBLK, corMFT, corMFG, corTO))
 b <- cbind(a, color = c(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE))
 colnames(b) = c("corr", "color")
-barplot(b$corr, main = "Correlations between Player Stats and EFF", names.arg = c("PTS", "REB", "STL", "AST", "BLK", "Missed_FT", "Missed_FG", "TO"), cex.names = 0.7, col = c("red", "grey")[(b$color > 0) + 1])
+barplot(b$corr, main = "Correlations between Player Stats and EFF", names.arg = c("PTS", "REB", "STL", "AST", "BLK", "Missed_FT", "Missed_FG", "TO"), cex.names = 0.5, col = c("red", "grey")[(b$color > 0) + 1])
 ```
 # 5. Efficiency and Salary
 Once you’ve calculated the Efficiency statistic, produce a scatterplot between Efficiency

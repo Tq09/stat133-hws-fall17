@@ -135,6 +135,10 @@ ei <- nsalary - yhat
 RSS <- sum(ei^2)
 TSS <- sum((nsalary - ybar)^2)
 R2 <- 1-RSS/TSS
+ei
+RSS
+TSS
+R2
 ```
 
 # 7. Exploring position and experience
