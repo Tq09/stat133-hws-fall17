@@ -1,0 +1,192 @@
+---
+title: "hw03-tianqi-lu"
+author: "Tianqi Lu"
+date: "10/15/2017"
+output: github_document
+---
+
+# Rankng of Teams
+
+The analysis stage of this assignment has to do with looking at various ways to rank the
+teams. Use an Rmd file for this part of your project.
+
+
+## Basic Rankings
+
+Start by ranking the teams according to salary, arranged in decreasing order. Use ggplot() to create a barchart (horizontally oriented), like the one shown below. The vertical red line is the average team salary.
+
+
+```{r}
+# Load needed libraries and create the table
+library(scales)
+library(ggplot2)
+library(readr)
+library(dplyr)
+teams <- read_csv('../data/nba2017-teams.csv')
+
+# Plot the chart
+ggplot(teams, aes(x = reorder(team, salary), y=salary)) +
+  geom_bar(stat='identity', fill = 'grey') +
+  geom_abline(intercept = mean(teams$salary), slope = 0, 
+              color = alpha('coral1', 0.7), size = 2)+
+  coord_flip()+
+  labs(y = 'Salary (in millions)', x = 'Team', 
+       title = 'NBA Teams ranked by Total Salary')+
+  theme_minimal()
+```
+
+The entire ranking is 
+```{r}
+select(arrange(teams, desc(salary)), team)
+```
+
+
+Create another bar chart of teams ranked by total points. The vertical red line is the average team points.
+
+
+```{r}
+library(scales)
+ggplot(teams, aes(x = reorder(team, points), y=points)) +
+  geom_bar(stat='identity', fill = 'grey') +
+  geom_abline(intercept = mean(teams$points), slope = 0, 
+              color = alpha('coral1', 0.7), size = 2)+
+  coord_flip()+
+  labs(y = 'Total Points', x = 'Team', 
+       title = 'NBA Teams ranked by Total Points')+
+  theme_minimal()
+```
+
+
+The entire ranking is 
+```{r}
+select(arrange(teams, desc(points)), team)
+```
+
+
+Use efficiency to obtain a third kind of ranking, and create an associated bar chart of teams ranked by total efficiency. The vertical red line is the average team efficiency.
+
+
+```{r}
+library(scales)
+ggplot(teams, aes(x = reorder(team, efficiency), y = efficiency)) +
+  geom_bar(stat='identity', fill = 'grey') +
+  geom_abline(intercept = mean(teams$efficiency), slope = 0, 
+              color = alpha('coral1', 0.7), size = 2)+
+  coord_flip()+
+  labs(y = 'Total Efficiency', x = 'Team', 
+       title = 'NBA Teams ranked by Total Efficiency')+
+  theme_minimal()
+```
+
+
+The entire ranking is 
+```{r}
+select(arrange(teams, desc(efficiency)), team)
+```
+
+
+
+## Principal Components Analysis (PCA)
+
+
+Perform a principal components analysis (PCA) on the following variables, to use the first principal component (PC1) as another index to rank the teams:
+
+
+```{r}
+# select the variables that we are interested in from teams
+focus <- teams[, -c(1, 2, 3, 7, 15)]
+# create pca object (containnig all the PC's)
+pca <- prcomp(focus, scale. = TRUE)
+# add PC1 PC2 back to teams
+teams <- mutate(teams, pc1 = pca$x[ ,1], pc2 = pca$x[ ,2])
+# rearrrange team by PC1 in descending order
+select(arrange(teams, desc(pc1)), team)
+```
+
+
+Createa a data frame with the eigenvalues:
+
+```{r}
+eigs <- data.frame(
+  eigenvalue = round(pca$sdev^2, 4),
+  prop = round(pca$sdev^2 / sum(pca$sdev^2), 4),
+  cumprop = round(cumsum(pca$sdev^2 / sum(pca$sdev^2)), 4)
+  )
+eigs
+```
+
+
+
+```{r}
+ggplot(data = teams, aes(pc1, pc2, label = team)) + 
+  geom_point() + 
+  geom_text(check_overlap = TRUE)
+```
+## Principal Components Analysis (PCA)
+
+
+Perform a principal components analysis (PCA) on the following variables, to use the first principal component (PC1) as another index to rank the teams:
+
+
+```{r}
+# select the variables that we are interested in from teams
+focus <- teams[, -c(1, 2, 3, 7, 15)]
+# create pca object (containnig all the PC's)
+pca <- prcomp(focus, scale. = TRUE)
+# add PC1 PC2 back to teams
+teams_with_pc <- mutate(teams, pc1 = pca$x[ ,1], pc2 = pca$x[ ,2])
+# rearrrange team by PC1 in descending order
+select(arrange(teams_with_pc, desc(pc1)), team)
+```
+
+
+Createa a data frame with the eigenvalues:
+
+```{r}
+eigs <- data.frame(
+  eigenvalue = round(pca$sdev^2, 4),
+  prop = round(pca$sdev^2 / sum(pca$sdev^2), 4),
+  cumprop = round(cumsum(pca$sdev^2 / sum(pca$sdev^2)), 4)
+  )
+eigs
+```
+
+
+Use the first two PCs to get a scatterplot of the teams
+
+```{r}
+ggplot(data = teams_with_pc, aes(pc1, pc2, label = team)) + 
+  geom_text(check_overlap = TRUE) +
+  ggtitle('PCA plot (PC1 and PC2)')
+```
+
+
+In order to build an index based on the first PC, you are going to transform PC1. To get a more meaningful scale, you can rescale the first PC with a new scale ranging from 0 to 100. Once you have obtained the rescaled PC1, you can produce a barchart like the previous ones.
+
+
+```{r}
+# rescale PC1
+teams_with_pc = mutate(teams_with_pc, 
+               rs_pc1 = 100 * (teams_with_pc$pc1 - min(teams_with_pc$pc1)) 
+               / (max(teams_with_pc$pc1) - min(teams_with_pc$pc1)))
+
+# create a barchart from the rescaled pc1
+ggplot(teams_with_pc, aes(x = reorder(team, rs_pc1), y = rs_pc1)) +
+  geom_bar(stat='identity', fill = 'grey') +
+  coord_flip()+
+  labs(y = 'First PC (Scaled from 0 to 100', x = 'Team', 
+       title = 'NBA Teams ranked by Scaled PC1') +
+  theme_minimal()
+```
+
+Use the scaled PC1 to rank the teams:
+
+```{r}
+select(arrange(teams_with_pc, desc(rs_pc1)), team)
+```
+
+
+
+
+
+

@@ -28,6 +28,12 @@ Tianqi Lu
 Hot Water Recipe
 ----------------
 
+``` r
+3 + 5
+```
+
+    ## [1] 8
+
 This is a recipe of how to cook
 ***Hot Water***!
 

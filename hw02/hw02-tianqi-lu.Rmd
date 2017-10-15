@@ -6,7 +6,7 @@ output: github_document
 ---
 
 # Import the data with base
-```{r}
+```{r }
 
 github <- "https://github.com/ucb-stat133/stat133-fall-2017/raw/master/"
 file <- "data/nba2017-player-statistics.csv"
@@ -35,6 +35,8 @@ str(data)
 data$Experience[data$Experience == "R"] = 0
 data$Experience <- as.integer(data$Experience)
 ```
+
+
 
 # 4. Performance of Players
 ```{r}

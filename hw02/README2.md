@@ -1,10 +1,13 @@
-# HW02 - Basics of Data Frames
+# HW03 - Ranking NBA Teams
 
-The purpose of this assignment is to start working with data frames. Use this HW to
-keep developing your manipulation skills of basic data objects in R: reading data tables,
-understanding data frames, use of bracket notation, the dollar operator, and become more
-and more familiar with the associated NBA data set which now includes more variables.
-Modify the content of this file.
+From the logistical point of view, the purpose of this assignment is twofold. On one hand, we
+want you to keep working with data frames and producing plots but now using the packages
+"dplyr" and "ggplot2". On the other hand, we want you to start working with a little bit
+more complex file structure.
+From the analytical point of view, we will focus on ranking tasks. This will give us an excuse
+to introduce Principal Components Analysis (PCA), from a narrow yet useful perspective.
+One of the deliverables is to calculate a composite index to rank NBA teams.
+
 
 - Special instructions for any user (if necessary)
 - Special instructions for graders (if necessary)

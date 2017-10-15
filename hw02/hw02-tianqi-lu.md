@@ -117,7 +117,7 @@ data <- cbind(data, Missed_FG, Missed_FT, PTS, REB, MPG, EFF)
 hist(EFF, main = "Histogram of Efficiency (EFF)", xlab = "EFF", ylab = "Frequency", col = "grey")
 ```
 
-![](hw02-tianqi-lu_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png)
+![](hw02-tianqi-lu_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-8-1.png)
 
 Display the player name, team, salary, and EFF value of the top-10 players by EFF in decreasing order
 -----------------------------------------------------------------------------------------------------
@@ -185,14 +185,14 @@ colnames(b) = c("corr", "color")
 barplot(b$corr, main = "Correlations between Player Stats and EFF", names.arg = c("PTS", "REB", "STL", "AST", "BLK", "Missed_FT", "Missed_FG", "TO"), cex.names = 0.5, col = c("red", "grey")[(b$color > 0) + 1])
 ```
 
-![](hw02-tianqi-lu_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-13-1.png) \# 5. Efficiency and Salary Once you’ve calculated the Efficiency statistic, produce a scatterplot between Efficiency (x-axis) and Salary (y-axis), including a lowess smooth line (locally weighted scatterplot smoothing). Also, compute the linear correlation coefficient between them. What can you say about the relationship between these two variables?
+![](hw02-tianqi-lu_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-12-1.png) \# 5. Efficiency and Salary Once you’ve calculated the Efficiency statistic, produce a scatterplot between Efficiency (x-axis) and Salary (y-axis), including a lowess smooth line (locally weighted scatterplot smoothing). Also, compute the linear correlation coefficient between them. What can you say about the relationship between these two variables?
 
 ``` r
 plot(x = data$EFF, y = data$Salary, xlab = "Players' efficiency", ylab = "Salary")
 lines(lowess(data$EFF,data$Salary), col = "blue")
 ```
 
-![](hw02-tianqi-lu_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
+![](hw02-tianqi-lu_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-13-1.png)
 
 ``` r
 cor(data$EFF, data$Salary)
@@ -221,7 +221,7 @@ plot(players2$EFF, players2$Salary, xlab = "Players with 20 or more MPG efficien
 lines(lowess(players2$EFF, players2$Salary), col = "red")
 ```
 
-![](hw02-tianqi-lu_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-17-1.png) - Compute the linear correlation coefficient between these variables.
+![](hw02-tianqi-lu_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-16-1.png) - Compute the linear correlation coefficient between these variables.
 
 ``` r
 cor(players2$EFF, players2$Salary)
