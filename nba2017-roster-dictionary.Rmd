@@ -1,0 +1,11 @@
+---
+title: "nba2017-roster-dictionary"
+author: "Tianqi Lu"
+date: "10/15/2017"
+output: github_document
+---
+# Dictionary
+
+This is a dictionary for the file "nba2017-roster.csv"
+
+This file consists of the basic information of nba players, including name, age, experience, salary etc.
