@@ -91,3 +91,5 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
+
+#### The app demos is under URL: http://127.0.0.1:5179
