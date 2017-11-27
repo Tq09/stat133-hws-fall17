@@ -1,0 +1,22 @@
+Summary of Overall[1] "  "
+minimum  : 30.8812 
+[1] ""
+percent10: 60.5789 
+[1] ""
+quartile1: 75.6627 
+[1] "   "
+median   : 83.2951 
+[1] "     "
+mean     : 80.0462 
+[1] ""
+quartile3: 89.0510 
+[1] ""
+percent90: 92.4454 
+[1] "  "
+maximum  : 100.0000 
+[1] "    "
+range    : 69.1188 
+[1] "    "
+stdev    : 12.9570 
+[1] "  "
+missing  : 0.0000 

@@ -1,0 +1,23 @@
+Summary of labs
+[1] "  "
+minimum  : 25.0000 
+[1] ""
+percent10: 83.3333 
+[1] ""
+quartile1: 91.6667 
+[1] "   "
+median   : 100.0000 
+[1] "     "
+mean     : 95.0100 
+[1] ""
+quartile3: 100.0000 
+[1] ""
+percent90: 100.0000 
+[1] "  "
+maximum  : 100.0000 
+[1] "    "
+range    : 75.0000 
+[1] "    "
+stdev    : 11.5007 
+[1] "  "
+missing  : 0.0000 

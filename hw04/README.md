@@ -1,0 +1,11 @@
+---
+title: "README"
+author: "Tianqi Lu"
+date: "11/26/2017"
+output: html_document
+---
+
+library(shiny)
+
+#Run an app from a subdirectory in the repo
+runGithub("stat133-hws-fall17", "tq2009", subdir = "hw04/app")
